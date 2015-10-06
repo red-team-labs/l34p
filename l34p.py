@@ -2,41 +2,63 @@
 
 import requests
 import re
+import sys
 from bs4 import BeautifulSoup
 
 
-num_lines = sum(1 for line in open('NAMES.DIC'))
-cur_lines = 0
 wordlist = 'NAMES.DIC'
-headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1' }
-url = 'http://www.screenleap.com/'
 
-with open(wordlist) as l:
-    for line in l:
-        linkz = url+line
-        print 'Checking: '+linkz
-        request = requests.get(linkz, headers)
-        c = request.content
-        soup = BeautifulSoup(c)
+useragent =  { 
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1' 
+}
 
-        #print soup
-        #print request.status_code
+base = 'http://www.screenleap.com/'
 
-        rematch = re.findall(r'does not exist', str(soup))
+debugz = [wordlist, useragent, base]
+print debugz
+debugz = raw_input('')
 
-        if rematch:
+f = open(wordlist)
+  
+for lineitem in iter(f):
+    sanline = lineitem.rstrip()
+    linkz = base+sanline
+    print 'Checking: '+linkz
+    debugz = raw_input('')
+    request = requests.get(linkz, headers=useragent, allow_redirects=True)
+    request.history
+    for req in request.history:
+        print req.status_code, req.url
+    debugz = raw_input('')
+    print str(request.content)
+    c = request.content
+    soup = BeautifulSoup(c)
+
+    print soup
+    #debugz = raw_input('')
+	#print request.status_code
+
+    rematch = re.findall(r'does not exist', str(soup))
+    isoffline = re.findall(r'is not currently broadcasting', str(soup))
+    isinvalid = re.findall(r'that is invalid', str(soup))
+
         
-            print '[!] Does not exist'
-    
+    if rematch or isinvalid:
+   
+        print '[!] Does not exist'
+        #debugz = raw_input('')
+            
+    else:
+
+        print '[*] I Found Something! --> '+linkz
+            
+        if isoffline:
+            
+            print '[*] User Is Not Broadcasting'
+            
         else:
+            
+            print '[*] User MAY Be Broadcasting!'
+            
+    debugz = raw_input('')
         
-            print '[*] I Found Something! --> '+linkz
-            print '[*] Checking If Live...'
-            isoffline = re.findall(r'is not currently broadcasting', str(soup))
-            print isoffline
- 
-            if not isoffline:  
-                print '[*] User Is Offline'
-            else:
-                print '[**] User Is Online [**]'
-        debugz = raw_input('')
