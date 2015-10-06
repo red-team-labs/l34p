@@ -3,62 +3,55 @@
 import requests
 import re
 import sys
+import random
 from bs4 import BeautifulSoup
 
 
 wordlist = 'NAMES.DIC'
-
-useragent =  { 
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1' 
-}
+uastring = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36', 
+ }
 
 base = 'http://www.screenleap.com/'
-
-debugz = [wordlist, useragent, base]
-print debugz
-debugz = raw_input('')
-
 f = open(wordlist)
   
 for lineitem in iter(f):
     sanline = lineitem.rstrip()
     linkz = base+sanline
-    print 'Checking: '+linkz
-    debugz = raw_input('')
-    request = requests.get(linkz, headers=useragent, allow_redirects=True)
-    request.history
-    for req in request.history:
-        print req.status_code, req.url
-    debugz = raw_input('')
-    print str(request.content)
+    #print 'Checking: '+linkz
+        
+    request = requests.get(linkz, headers=uastring, allow_redirects=True)
+    
+    # If you want to see if you are being redirected, uncomment the lines below
+    #request.history
+    
+    #for req in request.history:
+    #    print req.status_code, req.url
+    
     c = request.content
     soup = BeautifulSoup(c)
 
-    print soup
-    #debugz = raw_input('')
-	#print request.status_code
+    #Possible HTML can contain the following:
 
     rematch = re.findall(r'does not exist', str(soup))
     isoffline = re.findall(r'is not currently broadcasting', str(soup))
     isinvalid = re.findall(r'that is invalid', str(soup))
 
         
+    #Check to see if above HTML finds were found, and if so, what to do:
+
     if rematch or isinvalid:
    
-        print '[!] Does not exist'
-        #debugz = raw_input('')
-            
+        print '[!] Does not exist\n'
+                
     else:
 
         print '[*] I Found Something! --> '+linkz
             
         if isoffline:
             
-            print '[*] User Is Not Broadcasting'
+            print '[*] User Is Not Broadcasting\n'
             
         else:
-            
-            print '[*] User MAY Be Broadcasting!'
-            
-    debugz = raw_input('')
-        
+            # I have not tested what a broadcasting page contains since we do not have a java plugin running in requests but we can assume that a user is broadcasting
+            print '[*] User MAY Be Broadcasting!\n'       
