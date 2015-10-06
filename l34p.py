@@ -47,6 +47,9 @@ for lineitem in iter(f):
     else:
 
         print '[*] I Found Something! --> '+linkz
+        with open('log.txt', 'a') as outfile:
+            outfile.write(linkz+'\n')
+            outfile.close()
             
         if isoffline:
             
