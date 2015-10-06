@@ -42,7 +42,7 @@ for lineitem in iter(f):
 
     if rematch or isinvalid:
    
-        print '[!] Does not exist\n'
+        print '[!] '+sanline+' Does not exist\n'
                 
     else:
 
@@ -50,8 +50,8 @@ for lineitem in iter(f):
             
         if isoffline:
             
-            print '[*] User Is Not Broadcasting\n'
+            print '[*] '+sanline+' Is Not Broadcasting\n'
             
         else:
             # I have not tested what a broadcasting page contains since we do not have a java plugin running in requests but we can assume that a user is broadcasting
-            print '[*] User MAY Be Broadcasting!\n'       
+            print '[*] '+sanline+' MAY Be Broadcasting!\n'       
