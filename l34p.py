@@ -1,5 +1,11 @@
 #!/usr/bin/python
 
+
+# l34p
+# By: R4v3N
+# Top-Hat-Sec <> Red|Team|Labs
+
+
 import requests
 import re
 import sys
@@ -8,12 +14,12 @@ import pyglet
 from bs4 import BeautifulSoup
 
 
+
 wordlist = 'NAMES.DIC'
 uastring = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36', 
  }
 base = 'http://www.screenleap.com/'
-f = open(wordlist)
   
 
 class bcolors:
@@ -29,6 +35,17 @@ class bcolors:
 
 
 def main():
+
+    questiona = raw_input('Would you like to use a custom wordlist? ')
+
+    if questiona:
+
+        if questiona == 'y' or 'Y' or 'Yes' or 'yes':
+            wordlist = raw_input('Enter Wordlist Name: ')
+            f = open(wordlist)
+    else:
+
+        pass
 
     for lineitem in iter(f):
         sanline = lineitem.rstrip()
