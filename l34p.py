@@ -10,7 +10,6 @@ import requests
 import re
 import sys
 import random
-import pyglet
 from bs4 import BeautifulSoup
 
 
@@ -40,13 +39,13 @@ def main():
 
     if questiona:
 
-        if questiona == 'y' or 'Y' or 'Yes' or 'yes':
+        if questiona == 'y' or questiona == 'Y' or questiona == 'Yes' or questiona == 'yes':
             wordlist = raw_input('Enter Wordlist Name: ')
             f = open(wordlist)
-    else:
-
-        pass
-
+        else:
+            wordlist = 'NAMES.DIC'
+            f = open(wordlist)
+            
     for lineitem in iter(f):
         sanline = lineitem.rstrip()
         linkz = base+sanline
